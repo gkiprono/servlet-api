@@ -7,13 +7,26 @@
 <body>
 <h1><%= "Hello World!" %> </h1>
 <br/>
-<a href="/Login">SignUp</a>
+
 <form action="/HelloServlet" method="post">
-    <label>USERNAME</label> <input type="text" name="userName" placeholder="username">
+    <label>USERNAME</label> <input type="text" name="userName" placeholder="username" required>
     <br>
-    <label>PASSWORD </label> <input type="password" name="password">
+    <label>PASSWORD </label> <input type="password" name="password" required>
     <br>
-    <input type="submit" value="OK" >
+    <span>
+        <input type="submit" value="SignIn">
+        <input type="button" value="SignUp" name="signup" onclick= "location.href= '/SignUp'"/>
+
+    </span>
+
 </form>
 </body>
 </html>
+
+<script>
+
+    function signup(){
+        location.href = "/Login";
+    }
+
+</script>
