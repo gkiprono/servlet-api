@@ -1,5 +1,6 @@
 package com.example.serverletdemo;
 
+import com.example.models.Users;
 import com.example.service.AuthenticationService;
 
 import javax.servlet.*;
@@ -35,15 +36,15 @@ public class SignUp extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String firstName = request.getParameter("f_name");
-        String lastName = request.getParameter("l_name");
-        String passWord = request.getParameter("pass");
-        String cnf_pass = request.getParameter("pass_conf");
+        Users user = new Users();
+
+        user.setEmail(request.getParameter("email"));
+        user.setUserName(request.getParameter("userName"));
+        user.setFirstName(request.getParameter("f_name"));
+        user.setLastName(request.getParameter("l_name"));
+        user.setPassword(request.getParameter("pass"));
 
 
-
-        System.out.println(firstName + " "  + lastName + " "  + passWord + " " + cnf_pass);
-
-        // dispatch to welcome page
+       // dispatch to welcome page
     }
 }

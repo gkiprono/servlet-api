@@ -8,7 +8,33 @@ abstract class Person {
     private String email;
     private String userName;
     private String password;
+    private int accountId;
+    private int userId;
+    private String salt;
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
     public String getFirstName() {
         return firstName;
