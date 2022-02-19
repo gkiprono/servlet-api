@@ -1,28 +1,25 @@
 package com.example.serverletdemo;
 
+import com.example.dao.UserData;
+import com.example.dao.UserDataInterface;
 import com.example.models.Users;
-import com.example.service.AuthenticationService;
+import com.example.service.IdProvider;
+import com.example.utils.EncryptDecrypt;
+import environment.MiddleMan;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.InputStream;
 
 @WebServlet(name = "SignUp", value = "/SignUp")
 public class SignUp extends HttpServlet {
-
+    private UserDataInterface userDataInterface = new UserData();
+    private InputStream inputStream;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        PrintWriter writer = response.getWriter();
-//        writer.println("<html>");
-//        writer.println("<head>");
-//        writer.println("<title>login</title>");
-//        writer.println("</head>");
-//        writer.println("<body>");
-//        writer.println("<h2>login page</h2>");
-//        writer.println("</body>");
-//        writer.println("</html>");
 
         System.out.println(request.getMethod());
 
@@ -39,12 +36,30 @@ public class SignUp extends HttpServlet {
         Users user = new Users();
 
         user.setEmail(request.getParameter("email"));
-        user.setUserName(request.getParameter("userName"));
+        user.setUserName(request.getParameter("username"));
         user.setFirstName(request.getParameter("f_name"));
         user.setLastName(request.getParameter("l_name"));
-        user.setPassword(request.getParameter("pass"));
 
+        user.setSalt(EncryptDecrypt.getSalt(15));
+        user.setPassword(EncryptDecrypt.generateSecurePassword(request.getParameter("pass"), user.getSalt()));
 
+        user.setUserId(IdProvider.getNextUserId());
+        user.setAccountId(IdProvider.getNextAccountId());
+
+        this.inputStream = getServletContext().getResourceAsStream("/WEB-INF/lib/database.properties");
+        // other business logic
+
+        // save user details && todo if saved successfully
+        if(userDataInterface.setUser(user, inputStream)){
+            response.getWriter().append("Hello " + user.getFirstName() + " " + user.getLastName() +", welcome");
+            response.getWriter().append(" Congratulations");
+        }
        // dispatch to welcome page
     }
+
+    @Override
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        super.service(req, res);
+    }
+
 }
